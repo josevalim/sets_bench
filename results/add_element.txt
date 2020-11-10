@@ -1,0 +1,81 @@
+Operating System: macOS
+CPU Information: Intel(R) Core(TM) i5-1038NG7 CPU @ 2.00GHz
+Number of Available Cores: 8
+Available memory: 16 GB
+Elixir 1.12.0-dev
+Erlang 24.0-rc0
+
+Benchmark suite executing with the following configuration:
+warmup: 2 s
+time: 5 s
+memory time: 0 ns
+parallel: 1
+inputs: large eq bin, large eq int, medium eq bin, medium eq int, small eq bin, small eq int
+Estimated total run time: 1.40 min
+
+Benchmarking cerl_sets with input large eq bin...
+Benchmarking cerl_sets with input large eq int...
+Benchmarking cerl_sets with input medium eq bin...
+Benchmarking cerl_sets with input medium eq int...
+Benchmarking cerl_sets with input small eq bin...
+Benchmarking cerl_sets with input small eq int...
+Benchmarking sets with input large eq bin...
+Benchmarking sets with input large eq int...
+Benchmarking sets with input medium eq bin...
+Benchmarking sets with input medium eq int...
+Benchmarking sets with input small eq bin...
+Benchmarking sets with input small eq int...
+
+##### With input large eq bin #####
+Name                ips        average  deviation         median         99th %
+cerl_sets        2.65 M        0.38 μs   ±202.90%           0 μs        0.99 μs
+sets             0.36 M        2.77 μs   ±362.80%        1.99 μs       15.99 μs
+
+Comparison:
+cerl_sets        2.65 M
+sets             0.36 M - 7.34x slower +2.39 μs
+
+##### With input large eq int #####
+Name                ips        average  deviation         median         99th %
+cerl_sets        3.77 M        0.27 μs   ±191.64%           0 μs        0.99 μs
+sets             0.36 M        2.75 μs   ±831.64%        1.99 μs       14.99 μs
+
+Comparison:
+cerl_sets        3.77 M
+sets             0.36 M - 10.40x slower +2.49 μs
+
+##### With input medium eq bin #####
+Name                ips        average  deviation         median         99th %
+cerl_sets        3.93 M        0.25 μs   ±398.92%           0 μs        0.99 μs
+sets             0.93 M        1.07 μs  ±2855.52%        0.99 μs        1.99 μs
+
+Comparison:
+cerl_sets        3.93 M
+sets             0.93 M - 4.22x slower +0.82 μs
+
+##### With input medium eq int #####
+Name                ips        average  deviation         median         99th %
+cerl_sets        3.94 M      253.85 ns  ±3848.89%           0 ns         990 ns
+sets             1.32 M      755.29 ns  ±4421.29%         990 ns         990 ns
+
+Comparison:
+cerl_sets        3.94 M
+sets             1.32 M - 2.98x slower +501.44 ns
+
+##### With input small eq bin #####
+Name                ips        average  deviation         median         99th %
+sets             2.50 M      400.79 ns  ±8801.96%           0 ns         990 ns
+cerl_sets        2.18 M      458.82 ns  ±7251.98%           0 ns         990 ns
+
+Comparison:
+sets             2.50 M
+cerl_sets        2.18 M - 1.14x slower +58.03 ns
+
+##### With input small eq int #####
+Name                ips        average  deviation         median         99th %
+cerl_sets        3.17 M      315.36 ns ±14357.99%           0 ns         990 ns
+sets             2.69 M      371.94 ns  ±6957.85%           0 ns         990 ns
+
+Comparison:
+cerl_sets        3.17 M
+sets             2.69 M - 1.18x slower +56.58 ns

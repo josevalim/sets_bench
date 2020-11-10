@@ -1,0 +1,147 @@
+Operating System: macOS
+CPU Information: Intel(R) Core(TM) i5-1038NG7 CPU @ 2.00GHz
+Number of Available Cores: 8
+Available memory: 16 GB
+Elixir 1.12.0-dev
+Erlang 24.0-rc0
+
+Benchmark suite executing with the following configuration:
+warmup: 2 s
+time: 5 s
+memory time: 0 ns
+parallel: 1
+inputs: large distinct bin, large distinct int, large eq bin, large eq int, medium distinct bin, medium distinct int, medium eq bin, medium eq int, small distinct bin, small distinct int, small eq bin, small eq int
+Estimated total run time: 2.80 min
+
+Benchmarking cerl_sets with input large distinct bin...
+Benchmarking cerl_sets with input large distinct int...
+Benchmarking cerl_sets with input large eq bin...
+Benchmarking cerl_sets with input large eq int...
+Benchmarking cerl_sets with input medium distinct bin...
+Benchmarking cerl_sets with input medium distinct int...
+Benchmarking cerl_sets with input medium eq bin...
+Benchmarking cerl_sets with input medium eq int...
+Benchmarking cerl_sets with input small distinct bin...
+Benchmarking cerl_sets with input small distinct int...
+Benchmarking cerl_sets with input small eq bin...
+Benchmarking cerl_sets with input small eq int...
+Benchmarking sets with input large distinct bin...
+Benchmarking sets with input large distinct int...
+Benchmarking sets with input large eq bin...
+Benchmarking sets with input large eq int...
+Benchmarking sets with input medium distinct bin...
+Benchmarking sets with input medium distinct int...
+Benchmarking sets with input medium eq bin...
+Benchmarking sets with input medium eq int...
+Benchmarking sets with input small distinct bin...
+Benchmarking sets with input small distinct int...
+Benchmarking sets with input small eq bin...
+Benchmarking sets with input small eq int...
+
+##### With input large distinct bin #####
+Name                ips        average  deviation         median         99th %
+sets              60.54       16.52 ms     ±7.51%       16.43 ms       18.17 ms
+cerl_sets         60.09       16.64 ms    ±10.76%       16.22 ms       20.93 ms
+
+Comparison:
+sets              60.54
+cerl_sets         60.09 - 1.01x slower +0.124 ms
+
+##### With input large distinct int #####
+Name                ips        average  deviation         median         99th %
+sets              99.40       10.06 ms     ±6.04%       10.16 ms       11.75 ms
+cerl_sets         62.30       16.05 ms    ±15.55%       15.16 ms       20.08 ms
+
+Comparison:
+sets              99.40
+cerl_sets         62.30 - 1.60x slower +5.99 ms
+
+##### With input large eq bin #####
+Name                ips        average  deviation         median         99th %
+cerl_sets        109.74        9.11 ms    ±10.41%        9.08 ms        9.93 ms
+sets              70.25       14.24 ms     ±6.78%       14.18 ms       14.60 ms
+
+Comparison:
+cerl_sets        109.74
+sets              70.25 - 1.56x slower +5.12 ms
+
+##### With input large eq int #####
+Name                ips        average  deviation         median         99th %
+cerl_sets        152.55        6.56 ms     ±5.93%        6.52 ms        6.98 ms
+sets             114.16        8.76 ms     ±4.29%        8.75 ms        9.25 ms
+
+Comparison:
+cerl_sets        152.55
+sets             114.16 - 1.34x slower +2.20 ms
+
+##### With input medium distinct bin #####
+Name                ips        average  deviation         median         99th %
+cerl_sets        7.88 K      126.88 μs    ±60.43%         121 μs         199 μs
+sets             6.76 K      147.82 μs    ±54.54%         142 μs         220 μs
+
+Comparison:
+cerl_sets        7.88 K
+sets             6.76 K - 1.17x slower +20.95 μs
+
+##### With input medium distinct int #####
+Name                ips        average  deviation         median         99th %
+sets            11.17 K       89.51 μs    ±28.64%          86 μs         146 μs
+cerl_sets        9.68 K      103.31 μs    ±64.43%          98 μs         174 μs
+
+Comparison:
+sets            11.17 K
+cerl_sets        9.68 K - 1.15x slower +13.80 μs
+
+##### With input medium eq bin #####
+Name                ips        average  deviation         median         99th %
+cerl_sets       13.10 K       76.33 μs    ±76.28%          73 μs         129 μs
+sets             7.27 K      137.51 μs    ±57.20%         133 μs         202 μs
+
+Comparison:
+cerl_sets       13.10 K
+sets             7.27 K - 1.80x slower +61.18 μs
+
+##### With input medium eq int #####
+Name                ips        average  deviation         median         99th %
+cerl_sets       19.33 K       51.72 μs    ±96.19%          50 μs          89 μs
+sets            11.89 K       84.13 μs    ±29.21%          81 μs         132 μs
+
+Comparison:
+cerl_sets       19.33 K
+sets            11.89 K - 1.63x slower +32.41 μs
+
+##### With input small distinct bin #####
+Name                ips        average  deviation         median         99th %
+cerl_sets      607.42 K        1.65 μs  ±1156.28%           1 μs           2 μs
+sets           600.16 K        1.67 μs  ±1031.10%           1 μs           2 μs
+
+Comparison:
+cerl_sets      607.42 K
+sets           600.16 K - 1.01x slower +0.0199 μs
+
+##### With input small distinct int #####
+Name                ips        average  deviation         median         99th %
+cerl_sets        1.31 M        0.77 μs  ±3265.52%           1 μs           1 μs
+sets             0.65 M        1.53 μs  ±2075.82%           1 μs           2 μs
+
+Comparison:
+cerl_sets        1.31 M
+sets             0.65 M - 2.00x slower +0.77 μs
+
+##### With input small eq bin #####
+Name                ips        average  deviation         median         99th %
+cerl_sets      884.64 K        1.13 μs  ±2014.54%           1 μs           2 μs
+sets           581.56 K        1.72 μs  ±1078.93%           1 μs           2 μs
+
+Comparison:
+cerl_sets      884.64 K
+sets           581.56 K - 1.52x slower +0.59 μs
+
+##### With input small eq int #####
+Name                ips        average  deviation         median         99th %
+cerl_sets        2.03 M        0.49 μs  ±7373.78%           0 μs           1 μs
+sets             0.67 M        1.49 μs  ±2121.21%           1 μs           2 μs
+
+Comparison:
+cerl_sets        2.03 M
+sets             0.67 M - 3.02x slower +1.00 μs

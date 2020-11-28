@@ -13,7 +13,10 @@ Benchee.run(
        before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
     "sets" =>
       {fn [arg1, arg2] -> :sets.intersection(arg1, arg2) end,
-       before_scenario: fn args -> Enum.map(args, &:sets.from_list/1) end}
+       before_scenario: fn args -> Enum.map(args, &:sets.from_list/1) end},
+    "maps" =>
+      {fn [arg1, arg2] -> :maps.intersect(arg1, arg2) end,
+       before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end}
   },
   inputs: %{
     "small eq int" => [small_int_list, small_int_list],

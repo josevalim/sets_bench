@@ -17,10 +17,10 @@ large_other_bin_list = Enum.map(1..100_000, fn _ -> :crypto.strong_rand_bytes(10
 Benchee.run(
   %{
     "cerl_sets (filter)" =>
-      {fn [arg1, arg2] -> :cerl_sets.intersect(arg1, arg2) end,
+      {fn [arg1, arg2] -> :cerl_sets.intersection(arg1, arg2) end,
        before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
     "cerl_sets (iterator)" =>
-      {fn [arg1, arg2] -> :fast_maps.intersect(arg1, arg2) end,
+      {fn [arg1, arg2] -> :fast_maps.intersection(arg1, arg2) end,
        before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
     # "sets" =>
     #   {fn [arg1, arg2] -> :sets.intersection(arg1, arg2) end,

@@ -11,9 +11,15 @@ Benchee.run(
     "cerl_sets" =>
       {fn [arg1, arg2] -> :cerl_sets.is_element(arg1, arg2) end,
        before_scenario: fn [arg1, arg2] -> [arg1, :cerl_sets.from_list(arg2)] end},
-    "sets" =>
-      {fn [arg1, arg2] -> :sets.is_element(arg1, arg2) end,
-       before_scenario: fn [arg1, arg2] -> [arg1, :sets.from_list(arg2)] end}
+    # "sets" =>
+    #   {fn [arg1, arg2] -> :sets.is_element(arg1, arg2) end,
+    #    before_scenario: fn [arg1, arg2] -> [arg1, :sets.from_list(arg2)] end},
+    "gb_sets" =>
+      {fn [arg1, arg2] -> :gb_sets.is_element(arg1, arg2) end,
+       before_scenario: fn [arg1, arg2] -> [arg1, :gb_sets.from_list(arg2)] end},
+    "ordsets" =>
+      {fn [arg1, arg2] -> :ordsets.is_element(arg1, arg2) end,
+       before_scenario: fn [arg1, arg2] -> [arg1, :ordsets.from_list(arg2)] end}
   },
   inputs: %{
     "small eq int true" => [5, small_int_list],

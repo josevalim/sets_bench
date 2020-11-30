@@ -19,9 +19,15 @@ Benchee.run(
     "cerl_sets" =>
       {fn [arg1, arg2] -> :cerl_sets.subtract(arg1, arg2) end,
        before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
-    "sets" =>
-      {fn [arg1, arg2] -> :sets.subtract(arg1, arg2) end,
-       before_scenario: fn args -> Enum.map(args, &:sets.from_list/1) end}
+    # "sets" =>
+    #   {fn [arg1, arg2] -> :sets.subtract(arg1, arg2) end,
+    #    before_scenario: fn args -> Enum.map(args, &:sets.from_list/1) end}
+    "gb_sets" =>
+      {fn [arg1, arg2] -> :gb_sets.subtract(arg1, arg2) end,
+       before_scenario: fn args -> Enum.map(args, &:gb_sets.from_list/1) end},
+    "ordsets" =>
+      {fn [arg1, arg2] -> :ordsets.subtract(arg1, arg2) end,
+       before_scenario: fn args -> Enum.map(args, &:ordsets.from_list/1) end}
   },
   inputs: %{
     "small eq int" => [small_int_list, small_int_list],

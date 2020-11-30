@@ -17,16 +17,16 @@ large_other_bin_list = Enum.map(1..100_000, fn _ -> :crypto.strong_rand_bytes(10
 Benchee.run(
   %{
     "cerl_sets" =>
-      {fn [arg1, arg2] -> :cerl_sets.is_disjoint(arg1, arg2) end,
+      {fn [arg1, arg2] -> :cerl_sets.is_subset(arg1, arg2) end,
        before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
     # "sets" =>
-    #   {fn [arg1, arg2] -> :sets.is_disjoint(arg1, arg2) end,
+    #   {fn [arg1, arg2] -> :sets.is_subset(arg1, arg2) end,
     #    before_scenario: fn args -> Enum.map(args, &:sets.from_list/1) end}
     "gb_sets" =>
-      {fn [arg1, arg2] -> :gb_sets.is_disjoint(arg1, arg2) end,
+      {fn [arg1, arg2] -> :gb_sets.is_subset(arg1, arg2) end,
        before_scenario: fn args -> Enum.map(args, &:gb_sets.from_list/1) end},
     "ordsets" =>
-      {fn [arg1, arg2] -> :ordsets.is_disjoint(arg1, arg2) end,
+      {fn [arg1, arg2] -> :ordsets.is_subset(arg1, arg2) end,
        before_scenario: fn args -> Enum.map(args, &:ordsets.from_list/1) end}
   },
   inputs: %{

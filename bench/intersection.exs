@@ -20,7 +20,7 @@ Benchee.run(
       {fn [arg1, arg2] -> :cerl_sets.intersection(arg1, arg2) end,
        before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
     "cerl_sets (iterator)" =>
-      {fn [arg1, arg2] -> :fast_maps.intersection(arg1, arg2) end,
+      {fn [arg1, arg2] -> :fast_maps.intersect(arg1, arg2) end,
        before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
     # "sets" =>
     #   {fn [arg1, arg2] -> :sets.intersection(arg1, arg2) end,

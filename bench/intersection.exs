@@ -17,20 +17,23 @@ large_other_bin_list = Enum.map(1..100_000, fn _ -> :crypto.strong_rand_bytes(10
 Benchee.run(
   %{
     "cerl_sets (filter)" =>
-      {fn [arg1, arg2] -> :cerl_sets.intersection(arg1, arg2) end,
+      {fn [arg1, arg2] -> :fast_maps.filter_based(arg1, arg2) end,
        before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
     "cerl_sets (iterator)" =>
-      {fn [arg1, arg2] -> :fast_maps.intersect(arg1, arg2) end,
+      {fn [arg1, arg2] -> :fast_maps.iterator_based(arg1, arg2) end,
+       before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
+    "cerl_sets (mixed)" =>
+      {fn [arg1, arg2] -> :fast_maps.mixed(arg1, arg2) end,
        before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
     # "sets" =>
     #   {fn [arg1, arg2] -> :sets.intersection(arg1, arg2) end,
     #    before_scenario: fn args -> Enum.map(args, &:sets.from_list/1) end},
-    "ordsets" =>
-      {fn [arg1, arg2] -> :ordsets.intersection(arg1, arg2) end,
-       before_scenario: fn args -> Enum.map(args, &:ordsets.from_list/1) end},
-    "gb_sets" =>
-      {fn [arg1, arg2] -> :gb_sets.intersection(arg1, arg2) end,
-       before_scenario: fn args -> Enum.map(args, &:gb_sets.from_list/1) end}
+    # "ordsets" =>
+    #   {fn [arg1, arg2] -> :ordsets.intersection(arg1, arg2) end,
+    #    before_scenario: fn args -> Enum.map(args, &:ordsets.from_list/1) end},
+    # "gb_sets" =>
+    #   {fn [arg1, arg2] -> :gb_sets.intersection(arg1, arg2) end,
+    #    before_scenario: fn args -> Enum.map(args, &:gb_sets.from_list/1) end}
   },
   inputs: %{
     "small eq int" => [small_int_list, small_int_list],
@@ -44,6 +47,18 @@ Benchee.run(
     "large distinct int" => [large_int_list, large_other_int_list],
     "small distinct bin" => [small_bin_list, small_other_bin_list],
     "medium distinct bin" => [medium_bin_list, medium_other_bin_list],
-    "large distinct bin" => [large_bin_list, large_other_bin_list]
-  }
+    "large distinct bin" => [large_bin_list, large_other_bin_list],
+    "large 20%eq bin" => [large_bin_list, Enum.take(large_bin_list, 20_000)],
+    "large 40%eq bin" => [large_bin_list, Enum.take(large_bin_list, 40_000)],
+    "large 60%eq bin" => [large_bin_list, Enum.take(large_bin_list, 60_000)],
+    "large 80%eq bin" => [large_bin_list, Enum.take(large_bin_list, 80_000)],
+    "large 100%eq bin" => [large_bin_list, large_bin_list],
+    "large distinct+20%eq bin" => [large_bin_list, large_other_bin_list ++ Enum.take(large_bin_list, 20_000)],
+    "large distinct+40%eq bin" => [large_bin_list, large_other_bin_list ++ Enum.take(large_bin_list, 40_000)],
+    "large distinct+60%eq bin" => [large_bin_list, large_other_bin_list ++ Enum.take(large_bin_list, 60_000)],
+    "large distinct+80%eq bin" => [large_bin_list, large_other_bin_list ++ Enum.take(large_bin_list, 80_000)],
+    "large distinct+100%eq bin" => [large_bin_list, large_other_bin_list ++ large_bin_list]
+  },
+  warmup: 0.5,
+  time: 3
 )

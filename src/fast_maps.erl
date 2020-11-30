@@ -19,46 +19,95 @@
 %%
 
 -module(fast_maps).
+-export([iterator_based/2, mixed/2, filter_based/2]).
 
--export([intersect/2]).
+filter_based(S1, S2) when map_size(S1) >= map_size(S2) ->
+    filter(fun (E) -> is_element(E, S1) end, S2);
+filter_based(S1, S2) ->
+    filter_based(S2, S1).
 
-%% Copy from Erlang/OTP 24 master.
-intersect(LHS, RHS) when is_map(LHS), is_map(RHS) ->
+is_element(E,S) ->
+    case S of
+        #{E := _} -> true;
+        _ -> false
+    end.
+
+filter(Fun, Set) ->
+    maps:from_keys(filter_1(Fun, maps:iterator(Set)), []).
+
+filter_1(Fun, Iter) ->
+    case maps:next(Iter) of
+        {K, _, NextIter} ->
+            case Fun(K) of
+                true ->
+                    [K | filter_1(Fun, NextIter)];
+                false ->
+                    filter_1(Fun, NextIter)
+            end;
+        none ->
+            []
+    end.
+
+%%
+
+iterator_based(LHS, RHS) when is_map(LHS), is_map(RHS) ->
     case map_size(LHS) < map_size(RHS) of
         true ->
             Iterator = maps:iterator(LHS),
-            intersect_lhs(maps:next(Iterator), LHS, RHS);
+            iterator_based(maps:next(Iterator), LHS, RHS);
         false ->
             Iterator = maps:iterator(RHS),
-            intersect_rhs(maps:next(Iterator), RHS, LHS)
+            iterator_based(maps:next(Iterator), RHS, LHS)
     end;
-intersect(_LHS, _RHS) ->
+iterator_based(_LHS, _RHS) ->
     erlang:error(badarg).
 
-intersect_lhs({Key, LHS_Value, Iterator}, LHS0, RHS) ->
-    LHS = case RHS of
-              #{ Key := LHS_Value } ->
-                  LHS0;
-              #{ Key := RHS_Value } ->
-                  %% The value in RHS has precedence, so we must overwrite the
-                  %% current value if it differs.
-                  LHS0#{ Key := RHS_Value };
-              _ ->
-                  maps:remove(Key, LHS0)
-          end,
-    intersect_lhs(maps:next(Iterator), LHS, RHS);
-intersect_lhs(none, Res, _) ->
-    Res.
+iterator_based({Key, _Value, Iterator}, Acc0, Reference) ->
+    Acc1 = case Reference of
+      #{Key := _} -> Acc0;
+      #{} -> maps:remove(Key, Acc0)
+    end,
+    iterator_based(maps:next(Iterator), Acc1, Reference);
+iterator_based(none, Acc, _Reference) ->
+    Acc.
 
-intersect_rhs({Key, _RHS_Value, Iterator}, RHS0, LHS) ->
-    RHS = case LHS of
-              #{ Key := _LHS_Value } ->
-                  %% The value in RHS has precedence, so it doesn't need to
-                  %% be updated even if they differ.
-                  RHS0;
-              _ ->
-                  maps:remove(Key, RHS0)
-          end,
-    intersect_rhs(maps:next(Iterator), RHS, LHS);
-intersect_rhs(none, Res, _) ->
-    Res.
+%%
+
+mixed(LHS, RHS) when is_map(LHS), is_map(RHS) ->
+    case map_size(LHS) < map_size(RHS) of
+        true ->
+            Iterator = maps:iterator(LHS),
+            mixed_heuristic(maps:next(Iterator), [], [], floor(map_size(LHS) * 0.75), LHS, RHS);
+        false ->
+            Iterator = maps:iterator(RHS),
+            mixed_heuristic(maps:next(Iterator), [], [], floor(map_size(RHS) * 0.75), RHS, LHS)
+    end;
+mixed(_LHS, _RHS) ->
+    erlang:error(badarg).
+
+%% If we are keeping more than 40% of the keys, then it is
+%% cheaper to delete them. Stop accumulating and start deleting.
+mixed_heuristic(Next, _Keep, Delete, 0, Acc, Reference) ->
+  mixed_decided(Next, remove_keys(Delete, Acc), Reference);
+mixed_heuristic({Key, _Value, Iterator}, Keep, Delete, KeepCount, Acc, Reference) ->
+    Next = maps:next(Iterator),
+    case Reference of
+        #{Key := _} ->
+            mixed_heuristic(Next, [Key | Keep], Delete, KeepCount - 1, Acc, Reference);
+        _ ->
+            mixed_heuristic(Next, Keep, [Key | Delete], KeepCount, Acc, Reference)
+    end;
+mixed_heuristic(none, Keep, _Delete, _Count, _Acc, _Reference) ->
+    maps:from_keys(Keep, []).
+
+mixed_decided({Key, _Value, Iterator}, Acc0, Reference) ->
+    Acc1 = case Reference of
+      #{Key := _} -> Acc0;
+      #{} -> maps:remove(Key, Acc0)
+    end,
+    mixed_decided(maps:next(Iterator), Acc1, Reference);
+mixed_decided(none, Acc, _Reference) ->
+    Acc.
+
+remove_keys([K | Ks], Map) -> remove_keys(Ks, maps:remove(K, Map));
+remove_keys([], Map) -> Map.

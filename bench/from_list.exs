@@ -9,6 +9,7 @@ large_bin_list = Enum.map(1..100_000, fn _ -> :crypto.strong_rand_bytes(10) end)
 Benchee.run(
   %{
     "cerl_sets" => &:cerl_sets.from_list/1,
+    "from_keys" => &:maps.from_keys(&1, []),
     # "sets" => &:sets.from_list/1,
     "gb_sets" => &:gb_sets.from_list/1,
     "ordsets" => &:ordsets.from_list/1

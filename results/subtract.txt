@@ -1,32 +1,54 @@
+$ mix run bench/subtract.exs 
+Error trying to dermine erlang version enoent
 Operating System: macOS
 CPU Information: Intel(R) Core(TM) i5-1038NG7 CPU @ 2.00GHz
 Number of Available Cores: 8
 Available memory: 16 GB
 Elixir 1.12.0-dev
-Erlang 24.0-rc0
+Erlang ok
 
 Benchmark suite executing with the following configuration:
-warmup: 2 s
-time: 5 s
+warmup: 500 ms
+time: 3 s
 memory time: 0 ns
 parallel: 1
-inputs: large distinct bin, large distinct int, large eq bin, large eq int, medium distinct bin, medium distinct int, medium eq bin, medium eq int, small distinct bin, small distinct int, small eq bin, small eq int
-Estimated total run time: 4.20 min
+inputs: large 100%eq bin, large 20%eq bin, large 40%eq bin, large 60%eq bin, large 80%eq bin, large distinct bin, large distinct int, large distinct+100%eq bin, large distinct+20%eq bin, large distinct+40%eq bin, large distinct+60%eq bin, large distinct+80%eq bin, large eq bin, large eq int, medium distinct bin, medium distinct int, medium eq bin, medium eq int, small distinct bin, small distinct int, small eq bin, small eq int
+Estimated total run time: 3.85 min
 
-Benchmarking cerl_sets with input large distinct bin...
-Benchmarking cerl_sets with input large distinct int...
-Benchmarking cerl_sets with input large eq bin...
-Benchmarking cerl_sets with input large eq int...
-Benchmarking cerl_sets with input medium distinct bin...
-Benchmarking cerl_sets with input medium distinct int...
-Benchmarking cerl_sets with input medium eq bin...
-Benchmarking cerl_sets with input medium eq int...
-Benchmarking cerl_sets with input small distinct bin...
-Benchmarking cerl_sets with input small distinct int...
-Benchmarking cerl_sets with input small eq bin...
-Benchmarking cerl_sets with input small eq int...
+Benchmarking cerl_sets (mixed) with input large 100%eq bin...
+Benchmarking cerl_sets (mixed) with input large 20%eq bin...
+Benchmarking cerl_sets (mixed) with input large 40%eq bin...
+Benchmarking cerl_sets (mixed) with input large 60%eq bin...
+Benchmarking cerl_sets (mixed) with input large 80%eq bin...
+Benchmarking cerl_sets (mixed) with input large distinct bin...
+Benchmarking cerl_sets (mixed) with input large distinct int...
+Benchmarking cerl_sets (mixed) with input large distinct+100%eq bin...
+Benchmarking cerl_sets (mixed) with input large distinct+20%eq bin...
+Benchmarking cerl_sets (mixed) with input large distinct+40%eq bin...
+Benchmarking cerl_sets (mixed) with input large distinct+60%eq bin...
+Benchmarking cerl_sets (mixed) with input large distinct+80%eq bin...
+Benchmarking cerl_sets (mixed) with input large eq bin...
+Benchmarking cerl_sets (mixed) with input large eq int...
+Benchmarking cerl_sets (mixed) with input medium distinct bin...
+Benchmarking cerl_sets (mixed) with input medium distinct int...
+Benchmarking cerl_sets (mixed) with input medium eq bin...
+Benchmarking cerl_sets (mixed) with input medium eq int...
+Benchmarking cerl_sets (mixed) with input small distinct bin...
+Benchmarking cerl_sets (mixed) with input small distinct int...
+Benchmarking cerl_sets (mixed) with input small eq bin...
+Benchmarking cerl_sets (mixed) with input small eq int...
+Benchmarking gb_sets with input large 100%eq bin...
+Benchmarking gb_sets with input large 20%eq bin...
+Benchmarking gb_sets with input large 40%eq bin...
+Benchmarking gb_sets with input large 60%eq bin...
+Benchmarking gb_sets with input large 80%eq bin...
 Benchmarking gb_sets with input large distinct bin...
 Benchmarking gb_sets with input large distinct int...
+Benchmarking gb_sets with input large distinct+100%eq bin...
+Benchmarking gb_sets with input large distinct+20%eq bin...
+Benchmarking gb_sets with input large distinct+40%eq bin...
+Benchmarking gb_sets with input large distinct+60%eq bin...
+Benchmarking gb_sets with input large distinct+80%eq bin...
 Benchmarking gb_sets with input large eq bin...
 Benchmarking gb_sets with input large eq int...
 Benchmarking gb_sets with input medium distinct bin...
@@ -37,8 +59,18 @@ Benchmarking gb_sets with input small distinct bin...
 Benchmarking gb_sets with input small distinct int...
 Benchmarking gb_sets with input small eq bin...
 Benchmarking gb_sets with input small eq int...
+Benchmarking ordsets with input large 100%eq bin...
+Benchmarking ordsets with input large 20%eq bin...
+Benchmarking ordsets with input large 40%eq bin...
+Benchmarking ordsets with input large 60%eq bin...
+Benchmarking ordsets with input large 80%eq bin...
 Benchmarking ordsets with input large distinct bin...
 Benchmarking ordsets with input large distinct int...
+Benchmarking ordsets with input large distinct+100%eq bin...
+Benchmarking ordsets with input large distinct+20%eq bin...
+Benchmarking ordsets with input large distinct+40%eq bin...
+Benchmarking ordsets with input large distinct+60%eq bin...
+Benchmarking ordsets with input large distinct+80%eq bin...
 Benchmarking ordsets with input large eq bin...
 Benchmarking ordsets with input large eq int...
 Benchmarking ordsets with input medium distinct bin...
@@ -50,134 +82,244 @@ Benchmarking ordsets with input small distinct int...
 Benchmarking ordsets with input small eq bin...
 Benchmarking ordsets with input small eq int...
 
-##### With input large distinct bin #####
-Name                ips        average  deviation         median         99th %
-gb_sets           81.16       12.32 ms     ±9.71%       12.20 ms       17.79 ms
-ordsets           79.55       12.57 ms    ±10.83%       12.38 ms       16.66 ms
-cerl_sets         59.41       16.83 ms    ±11.04%       16.52 ms       19.34 ms
+##### With input large 100%eq bin #####
+Name                        ips        average  deviation         median         99th %
+gb_sets                  124.63        8.02 ms    ±69.90%        7.28 ms       13.40 ms
+cerl_sets (mixed)        116.77        8.56 ms    ±68.48%        7.68 ms       15.61 ms
+ordsets                   59.57       16.79 ms    ±23.98%       15.92 ms       31.91 ms
 
-Comparison:
-gb_sets           81.16
-ordsets           79.55 - 1.02x slower +0.25 ms
-cerl_sets         59.41 - 1.37x slower +4.51 ms
+Comparison: 
+gb_sets                  124.63
+cerl_sets (mixed)        116.77 - 1.07x slower +0.54 ms
+ordsets                   59.57 - 2.09x slower +8.76 ms
+
+##### With input large 20%eq bin #####
+Name                        ips        average  deviation         median         99th %
+cerl_sets (mixed)        538.16        1.86 ms   ±134.73%        1.82 ms        4.09 ms
+gb_sets                  251.79        3.97 ms    ±37.71%        3.80 ms        4.83 ms
+ordsets                   80.81       12.37 ms    ±51.26%       11.85 ms       17.28 ms
+
+Comparison: 
+cerl_sets (mixed)        538.16
+gb_sets                  251.79 - 2.14x slower +2.11 ms
+ordsets                   80.81 - 6.66x slower +10.52 ms
+
+##### With input large 40%eq bin #####
+Name                        ips        average  deviation         median         99th %
+cerl_sets (mixed)        289.58        3.45 ms    ±46.33%        3.54 ms        6.07 ms
+gb_sets                  185.47        5.39 ms    ±30.69%        5.10 ms        6.87 ms
+ordsets                   61.86       16.16 ms    ±20.80%       15.61 ms       27.35 ms
+
+Comparison: 
+cerl_sets (mixed)        289.58
+gb_sets                  185.47 - 1.56x slower +1.94 ms
+ordsets                   61.86 - 4.68x slower +12.71 ms
+
+##### With input large 60%eq bin #####
+Name                        ips        average  deviation         median         99th %
+cerl_sets (mixed)        197.25        5.07 ms    ±84.25%        4.53 ms       10.81 ms
+gb_sets                  166.52        6.01 ms    ±39.28%        5.76 ms        9.15 ms
+ordsets                   57.79       17.30 ms    ±21.78%       16.86 ms       36.18 ms
+
+Comparison: 
+cerl_sets (mixed)        197.25
+gb_sets                  166.52 - 1.18x slower +0.94 ms
+ordsets                   57.79 - 3.41x slower +12.24 ms
+
+##### With input large 80%eq bin #####
+Name                        ips        average  deviation         median         99th %
+cerl_sets (mixed)        144.10        6.94 ms    ±73.70%        6.11 ms       11.97 ms
+gb_sets                  135.56        7.38 ms    ±35.45%        7.13 ms        9.72 ms
+ordsets                   59.77       16.73 ms    ±24.95%       15.57 ms       37.29 ms
+
+Comparison: 
+cerl_sets (mixed)        144.10
+gb_sets                  135.56 - 1.06x slower +0.44 ms
+ordsets                   59.77 - 2.41x slower +9.79 ms
+
+##### With input large distinct bin #####
+Name                        ips        average  deviation         median         99th %
+cerl_sets (mixed)        128.78        7.76 ms    ±30.31%        7.77 ms       12.02 ms
+gb_sets                  112.62        8.88 ms    ±66.75%        8.31 ms       11.35 ms
+ordsets                   45.07       22.19 ms     ±5.79%       21.89 ms       28.98 ms
+
+Comparison: 
+cerl_sets (mixed)        128.78
+gb_sets                  112.62 - 1.14x slower +1.11 ms
+ordsets                   45.07 - 2.86x slower +14.42 ms
 
 ##### With input large distinct int #####
-Name                ips        average  deviation         median         99th %
-ordsets          219.46        4.56 ms    ±15.31%        4.50 ms        5.34 ms
-gb_sets          172.91        5.78 ms    ±14.16%        5.72 ms        6.84 ms
-cerl_sets         67.67       14.78 ms     ±7.44%       14.88 ms       17.53 ms
+Name                        ips        average  deviation         median         99th %
+gb_sets                  425.57        2.35 ms    ±37.37%        2.22 ms        3.26 ms
+ordsets                  178.22        5.61 ms     ±7.89%        5.53 ms        6.90 ms
+cerl_sets (mixed)        171.98        5.81 ms    ±68.44%        6.05 ms        9.28 ms
 
-Comparison:
-ordsets          219.46
-gb_sets          172.91 - 1.27x slower +1.23 ms
-cerl_sets         67.67 - 3.24x slower +10.22 ms
+Comparison: 
+gb_sets                  425.57
+ordsets                  178.22 - 2.39x slower +3.26 ms
+cerl_sets (mixed)        171.98 - 2.47x slower +3.46 ms
+
+##### With input large distinct+100%eq bin #####
+Name                        ips        average  deviation         median         99th %
+cerl_sets (mixed)        114.56        8.73 ms    ±34.39%        8.25 ms       13.24 ms
+gb_sets                   80.03       12.50 ms    ±29.42%       12.20 ms       20.12 ms
+ordsets                   30.17       33.14 ms    ±35.06%       31.84 ms      140.21 ms
+
+Comparison: 
+cerl_sets (mixed)        114.56
+gb_sets                   80.03 - 1.43x slower +3.77 ms
+ordsets                   30.17 - 3.80x slower +24.41 ms
+
+##### With input large distinct+20%eq bin #####
+Name                        ips        average  deviation         median         99th %
+gb_sets                   97.15       10.29 ms    ±27.12%        9.86 ms       14.07 ms
+cerl_sets (mixed)         59.44       16.82 ms    ±26.29%       16.98 ms       32.11 ms
+ordsets                   34.90       28.66 ms    ±16.33%       27.85 ms       72.13 ms
+
+Comparison: 
+gb_sets                   97.15
+cerl_sets (mixed)         59.44 - 1.63x slower +6.53 ms
+ordsets                   34.90 - 2.78x slower +18.36 ms
+
+##### With input large distinct+40%eq bin #####
+Name                        ips        average  deviation         median         99th %
+gb_sets                   90.27       11.08 ms    ±27.62%       10.65 ms       17.14 ms
+cerl_sets (mixed)         72.08       13.87 ms    ±58.28%       12.92 ms       22.91 ms
+ordsets                   32.31       30.95 ms    ±16.39%       30.29 ms       78.81 ms
+
+Comparison: 
+gb_sets                   90.27
+cerl_sets (mixed)         72.08 - 1.25x slower +2.80 ms
+ordsets                   32.31 - 2.79x slower +19.87 ms
+
+##### With input large distinct+60%eq bin #####
+Name                        ips        average  deviation         median         99th %
+gb_sets                   91.08       10.98 ms    ±27.51%       10.47 ms       15.69 ms
+cerl_sets (mixed)         84.59       11.82 ms    ±30.34%       12.07 ms       18.17 ms
+ordsets                   29.52       33.88 ms    ±34.96%       32.65 ms      142.28 ms
+
+Comparison: 
+gb_sets                   91.08
+cerl_sets (mixed)         84.59 - 1.08x slower +0.84 ms
+ordsets                   29.52 - 3.09x slower +22.90 ms
+
+##### With input large distinct+80%eq bin #####
+Name                        ips        average  deviation         median         99th %
+cerl_sets (mixed)         99.70       10.03 ms    ±32.78%        9.21 ms       19.02 ms
+gb_sets                   82.66       12.10 ms    ±28.47%       11.57 ms       18.31 ms
+ordsets                   29.71       33.65 ms    ±37.07%       32.21 ms      148.50 ms
+
+Comparison: 
+cerl_sets (mixed)         99.70
+gb_sets                   82.66 - 1.21x slower +2.07 ms
+ordsets                   29.71 - 3.36x slower +23.62 ms
 
 ##### With input large eq bin #####
-Name                ips        average  deviation         median         99th %
-gb_sets          166.37        6.01 ms    ±12.94%        5.98 ms        6.88 ms
-cerl_sets        107.44        9.31 ms    ±10.60%        9.22 ms       10.75 ms
-ordsets          101.05        9.90 ms     ±4.05%        9.79 ms       11.15 ms
+Name                        ips        average  deviation         median         99th %
+gb_sets                  124.90        8.01 ms    ±65.21%        7.22 ms       11.69 ms
+cerl_sets (mixed)        111.00        9.01 ms    ±67.26%        7.87 ms       18.76 ms
+ordsets                   57.91       17.27 ms    ±44.82%       16.14 ms       52.58 ms
 
-Comparison:
-gb_sets          166.37
-cerl_sets        107.44 - 1.55x slower +3.30 ms
-ordsets          101.05 - 1.65x slower +3.89 ms
+Comparison: 
+gb_sets                  124.90
+cerl_sets (mixed)        111.00 - 1.13x slower +1.00 ms
+ordsets                   57.91 - 2.16x slower +9.26 ms
 
 ##### With input large eq int #####
-Name                ips        average  deviation         median         99th %
-gb_sets          411.18        2.43 ms    ±11.49%        2.39 ms        2.88 ms
-ordsets          313.10        3.19 ms     ±6.40%        3.14 ms        3.81 ms
-cerl_sets        149.81        6.68 ms     ±6.38%        6.64 ms        7.32 ms
+Name                        ips        average  deviation         median         99th %
+gb_sets                  239.62        4.17 ms    ±30.44%        4.11 ms        5.03 ms
+ordsets                  163.88        6.10 ms    ±26.82%        5.97 ms        7.13 ms
+cerl_sets (mixed)        152.13        6.57 ms    ±28.52%        6.56 ms       10.57 ms
 
-Comparison:
-gb_sets          411.18
-ordsets          313.10 - 1.31x slower +0.76 ms
-cerl_sets        149.81 - 2.74x slower +4.24 ms
+Comparison: 
+gb_sets                  239.62
+ordsets                  163.88 - 1.46x slower +1.93 ms
+cerl_sets (mixed)        152.13 - 1.58x slower +2.40 ms
 
 ##### With input medium distinct bin #####
-Name                ips        average  deviation         median         99th %
-ordsets         15.04 K       66.47 μs    ±84.54%          62 μs         130 μs
-gb_sets         10.97 K       91.12 μs    ±73.66%          86 μs         158 μs
-cerl_sets        7.71 K      129.64 μs    ±61.40%         121 μs         211 μs
+Name                        ips        average  deviation         median         99th %
+ordsets                188.65 K        5.30 μs   ±687.40%           1 μs          63 μs
+cerl_sets (mixed)      115.30 K        8.67 μs  ±4237.28%           0 μs          60 μs
+gb_sets                 50.90 K       19.64 μs   ±673.63%          15 μs          70 μs
 
-Comparison:
-ordsets         15.04 K
-gb_sets         10.97 K - 1.37x slower +24.65 μs
-cerl_sets        7.71 K - 1.95x slower +63.16 μs
+Comparison: 
+ordsets                188.65 K
+cerl_sets (mixed)      115.30 K - 1.64x slower +3.37 μs
+gb_sets                 50.90 K - 3.71x slower +14.34 μs
 
 ##### With input medium distinct int #####
-Name                ips        average  deviation         median         99th %
-ordsets        109.40 K        9.14 μs   ±247.83%           8 μs          29 μs
-gb_sets         27.91 K       35.83 μs    ±47.49%          33 μs          82 μs
-cerl_sets        9.47 K      105.55 μs    ±29.73%          98 μs         185 μs
+Name                        ips        average  deviation         median         99th %
+ordsets                 35.47 M       28.19 ns ±45014.24%           0 ns           0 ns
+gb_sets                  1.75 M      570.20 ns ±15897.95%           0 ns           0 ns
+cerl_sets (mixed)        0.27 M     3725.64 ns  ±3808.83%           0 ns       27000 ns
 
-Comparison:
-ordsets        109.40 K
-gb_sets         27.91 K - 3.92x slower +26.69 μs
-cerl_sets        9.47 K - 11.55x slower +96.41 μs
+Comparison: 
+ordsets                 35.47 M
+gb_sets                  1.75 M - 20.23x slower +542.01 ns
+cerl_sets (mixed)        0.27 M - 132.16x slower +3697.45 ns
 
 ##### With input medium eq bin #####
-Name                ips        average  deviation         median         99th %
-ordsets         26.54 K       37.68 μs    ±25.74%          35 μs          81 μs
-gb_sets         17.74 K       56.36 μs    ±88.33%          53 μs         115 μs
-cerl_sets       12.85 K       77.84 μs    ±32.78%          74 μs         138 μs
+Name                        ips        average  deviation         median         99th %
+ordsets                396.85 K        2.52 μs ±11867.51%           0 μs          36 μs
+gb_sets                104.77 K        9.55 μs  ±1287.57%           6 μs          63 μs
+cerl_sets (mixed)       42.40 K       23.59 μs  ±1777.39%          18 μs          66 μs
 
-Comparison:
-ordsets         26.54 K
-gb_sets         17.74 K - 1.50x slower +18.68 μs
-cerl_sets       12.85 K - 2.07x slower +40.16 μs
+Comparison: 
+ordsets                396.85 K
+gb_sets                104.77 K - 3.79x slower +7.03 μs
+cerl_sets (mixed)       42.40 K - 9.36x slower +21.07 μs
 
 ##### With input medium eq int #####
-Name                ips        average  deviation         median         99th %
-ordsets        185.18 K        5.40 μs    ±57.72%           5 μs           8 μs
-gb_sets         43.69 K       22.89 μs   ±143.92%          21 μs          56 μs
-cerl_sets       19.03 K       52.54 μs    ±96.33%          50 μs         102 μs
+Name                        ips        average  deviation         median         99th %
+ordsets               3592.90 K        0.28 μs ±20242.93%           0 μs           0 μs
+gb_sets                908.84 K        1.10 μs  ±8120.76%           0 μs          25 μs
+cerl_sets (mixed)      210.42 K        4.75 μs  ±3328.02%           0 μs          28 μs
 
-Comparison:
-ordsets        185.18 K
-gb_sets         43.69 K - 4.24x slower +17.49 μs
-cerl_sets       19.03 K - 9.73x slower +47.14 μs
+Comparison: 
+ordsets               3592.90 K
+gb_sets                908.84 K - 3.95x slower +0.82 μs
+cerl_sets (mixed)      210.42 K - 17.07x slower +4.47 μs
 
 ##### With input small distinct bin #####
-Name                ips        average  deviation         median         99th %
-ordsets       1488.63 K        0.67 μs  ±2953.75%           1 μs           1 μs
-gb_sets        868.31 K        1.15 μs   ±926.31%           1 μs           2 μs
-cerl_sets      586.63 K        1.70 μs  ±1167.82%           1 μs           3 μs
+Name                        ips        average  deviation         median         99th %
+ordsets               1896.97 M        0.53 ns ±53413.18%           0 ns           0 ns
+gb_sets                  9.58 M      104.36 ns ±25177.54%           0 ns           0 ns
+cerl_sets (mixed)        5.83 M      171.66 ns ±23562.86%           0 ns           0 ns
 
-Comparison:
-ordsets       1488.63 K
-gb_sets        868.31 K - 1.71x slower +0.48 μs
-cerl_sets      586.63 K - 2.54x slower +1.03 μs
+Comparison: 
+ordsets               1896.97 M
+gb_sets                  9.58 M - 197.97x slower +103.83 ns
+cerl_sets (mixed)        5.83 M - 325.63x slower +171.13 ns
 
 ##### With input small distinct int #####
-Name                ips        average  deviation         median         99th %
-ordsets          4.14 M      241.51 ns ±11145.87%           0 ns        1000 ns
-cerl_sets        1.38 M      726.45 ns  ±3761.59%        1000 ns        1000 ns
-gb_sets          1.36 M      735.71 ns  ±2169.03%        1000 ns        1000 ns
+Name                        ips        average  deviation         median         99th %
+ordsets               2702.90 M        0.37 ns±171541.29%           0 ns           0 ns
+gb_sets                  8.13 M      123.00 ns ±45503.66%           0 ns           0 ns
+cerl_sets (mixed)        5.97 M      167.63 ns ±21303.52%           0 ns           0 ns
 
-Comparison:
-ordsets          4.14 M
-cerl_sets        1.38 M - 3.01x slower +484.95 ns
-gb_sets          1.36 M - 3.05x slower +494.20 ns
+Comparison: 
+ordsets               2702.90 M
+gb_sets                  8.13 M - 332.45x slower +122.63 ns
+cerl_sets (mixed)        5.97 M - 453.09x slower +167.26 ns
 
 ##### With input small eq bin #####
-Name                ips        average  deviation         median         99th %
-ordsets          1.92 M      521.84 ns   ±163.08%        1000 ns        1000 ns
-gb_sets          1.10 M      905.38 ns  ±3681.50%        1000 ns        1000 ns
-cerl_sets        0.87 M     1153.90 ns  ±2824.47%        1000 ns        2000 ns
+Name                        ips        average  deviation         median         99th %
+ordsets                215.59 M        4.64 ns ±99284.46%           0 ns           0 ns
+cerl_sets (mixed)       52.37 M       19.10 ns±117142.62%           0 ns           0 ns
+gb_sets                  8.82 M      113.39 ns ±13058.58%           0 ns           0 ns
 
-Comparison:
-ordsets          1.92 M
-gb_sets          1.10 M - 1.73x slower +383.54 ns
-cerl_sets        0.87 M - 2.21x slower +632.06 ns
+Comparison: 
+ordsets                215.59 M
+cerl_sets (mixed)       52.37 M - 4.12x slower +14.46 ns
+gb_sets                  8.82 M - 24.45x slower +108.76 ns
 
 ##### With input small eq int #####
-Name                ips        average  deviation         median         99th %
-ordsets          5.14 M      194.54 ns   ±381.59%           0 ns        1000 ns
-gb_sets          2.14 M      467.37 ns  ±5219.93%           0 ns        1000 ns
-cerl_sets        2.05 M      488.63 ns  ±4714.73%           0 ns        1000 ns
+Name                        ips        average  deviation         median         99th %
+cerl_sets (mixed)       87.46 M       11.43 ns±145281.05%           0 ns           0 ns
+ordsets                 29.14 M       34.31 ns±156694.17%           0 ns           0 ns
+gb_sets                  4.06 M      246.09 ns ±16193.09%           0 ns           0 ns
 
-Comparison:
-ordsets          5.14 M
-gb_sets          2.14 M - 2.40x slower +272.83 ns
-cerl_sets        2.05 M - 2.51x slower +294.09 ns
+Comparison: 
+cerl_sets (mixed)       87.46 M
+ordsets                 29.14 M - 3.00x slower +22.88 ns
+gb_sets                  4.06 M - 21.52x slower +234.66 ns

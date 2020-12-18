@@ -22,24 +22,24 @@ Benchee.run(
     # "cerl_sets (iterator)" =>
     #   {fn [arg1, arg2] -> :fast_maps.iterator_based(arg1, arg2) end,
     #    before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
-    "cerl_sets (mixed)" =>
-      {fn [arg1, arg2] -> :fast_maps.mixed(arg1, arg2) end,
+    # "cerl_sets (mixed)" =>
+    #   {fn [arg1, arg2] -> :fast_maps.mixed(arg1, arg2) end,
+    #    before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
+    "maps (iterator)" =>
+      {fn [arg1, arg2] -> :maps.intersect(arg1, arg2) end,
        before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
-    # "maps (iterator)" =>
-    #   {fn [arg1, arg2] -> :maps.intersect(arg1, arg2) end,
-    #    before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
-    # "maps (mixed)" =>
-    #   {fn [arg1, arg2] -> :fast_maps.intersect(arg1, arg2) end,
-    #    before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
+    "maps (mixed)" =>
+      {fn [arg1, arg2] -> :fast_maps.intersect(arg1, arg2) end,
+       before_scenario: fn args -> Enum.map(args, &:cerl_sets.from_list/1) end},
     # "sets" =>
     #   {fn [arg1, arg2] -> :sets.intersection(arg1, arg2) end,
     #    before_scenario: fn args -> Enum.map(args, &:sets.from_list/1) end},
-    "ordsets" =>
-      {fn [arg1, arg2] -> :ordsets.intersection(arg1, arg2) end,
-       before_scenario: fn args -> Enum.map(args, &:ordsets.from_list/1) end},
-    "gb_sets" =>
-      {fn [arg1, arg2] -> :gb_sets.intersection(arg1, arg2) end,
-       before_scenario: fn args -> Enum.map(args, &:gb_sets.from_list/1) end}
+    # "ordsets" =>
+    #   {fn [arg1, arg2] -> :ordsets.intersection(arg1, arg2) end,
+    #    before_scenario: fn args -> Enum.map(args, &:ordsets.from_list/1) end},
+    # "gb_sets" =>
+    #   {fn [arg1, arg2] -> :gb_sets.intersection(arg1, arg2) end,
+    #    before_scenario: fn args -> Enum.map(args, &:gb_sets.from_list/1) end}
   },
   inputs: %{
     "small eq int" => [small_int_list, small_int_list],

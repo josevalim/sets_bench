@@ -151,56 +151,23 @@ intersect_with(_Combiner, _Map1, _Map2) ->
 
 intersect_with_sorted(Combiner, SmallMap, BigMap) ->
     Next = maps:next(maps:iterator(SmallMap)),
-    Limit = floor(map_size(SmallMap) * 0.75),
-    intersect_with_heuristic(Next, [], [], Limit, SmallMap, BigMap, Combiner).
+    intersect_with_iterate(Next, [], SmallMap, BigMap, Combiner).
 
-%% If we are keeping/changing more than 75% of the keys,
-%% then it is cheaper to update in place. Stop accumulating
-%% and start replacing and deleting.
-intersect_with_heuristic(Next, Keep, Delete, 0, Map1, Map2, Combiner) ->
-    intersect_with_decided(Next, replace(Keep, without(Delete, Map1)), Map2, Combiner);
-intersect_with_heuristic({K, V1, Iterator}, Keep, Delete, Count, Map1, Map2, Combiner) ->
+intersect_with_iterate({K, V1, Iterator}, Keep, Map1, Map2, Combiner) ->
     Next = maps:next(Iterator),
     case Map2 of
         #{ K := V2 } ->
             V = Combiner(K, V1, V2),
-            intersect_with_heuristic(Next, [{K,V}|Keep], Delete, Count-1, Map1, Map2, Combiner);
+            intersect_with_iterate(Next, [{K,V}|Keep], Map1, Map2, Combiner);
         _ ->
-            intersect_with_heuristic(Next, Keep, [K|Delete], Count, Map1, Map2, Combiner)
+            intersect_with_iterate(Next, Keep, Map1, Map2, Combiner)
     end;
-intersect_with_heuristic(none, Keep, _Delete, _Count, _Map1, _Map2, _Combiner) ->
+intersect_with_iterate(none, Keep, _Map1, _Map2, _Combiner) ->
     maps:from_list(Keep).
 
-intersect_with_decided({K, V1, Iterator}, Map1, Map2, Combiner) ->
-    case Map2 of
-        #{ K := V2 } ->
-            NewMap1 = Map1#{ K := Combiner(K, V1, V2) },
-            intersect_with_decided(maps:next(Iterator), NewMap1, Map2, Combiner);
-        _ ->
-            intersect_with_decided(maps:next(Iterator), maps:remove(K, Map1), Map2, Combiner)
-    end;
-intersect_with_decided(none, Res, _, _) ->
-    Res.
-
-replace([{K,V}|KVs],M) -> replace(KVs, M#{K := V});
-replace([],M) -> M.
-
-without(Ks,M) when is_list(Ks), is_map(M) ->
-    without_1(Ks, M).
-
-without_1([K|Ks],M) -> without_1(Ks, maps:remove(K, M));
-without_1([],M) -> M.
-
-
 subtract_iterator(LHS, RHS) when is_map(LHS), is_map(RHS) ->
-    case map_size(LHS) =< map_size(RHS) of
-        true ->
-            Next = maps:next(maps:iterator(LHS)),
-            subtract_decided_lhs(Next, LHS, RHS);
-        false ->
-            Next = maps:next(maps:iterator(RHS)),
-            subtract_decided_rhs(Next, LHS)
-    end.
+    Next = maps:next(maps:iterator(LHS)),
+    subtract_decided(Next, LHS, RHS).
 
 subtract_filter(S1, S2) ->
     filter(fun (E) -> not is_element(E, S2) end, S1).
@@ -208,54 +175,30 @@ subtract_filter(S1, S2) ->
 %% Subtract mixed
 
 subtract(LHS, RHS) when is_map(LHS), is_map(RHS) ->
-    case map_size(LHS) =< map_size(RHS) of
-        true ->
-            Next = maps:next(maps:iterator(LHS)),
-            subtract_heuristic_lhs(Next, [], [], floor(map_size(LHS) * 0.75), LHS, RHS);
-        false ->
-            Next = maps:next(maps:iterator(RHS)),
-            subtract_heuristic_rhs(Next, [], [], floor(map_size(LHS) * 0.75), LHS)
-    end;
+    Next = maps:next(maps:iterator(LHS)),
+    subtract_heuristic(Next, [], [], floor(map_size(LHS) * 0.75), LHS, RHS);
 subtract(_LHS, _RHS) ->
     erlang:error(badarg).
 
-subtract_heuristic_lhs(Next, _Keep, Delete, 0, Acc, Reference) ->
-  subtract_decided_lhs(Next, remove_keys(Delete, Acc), Reference);
-subtract_heuristic_lhs({Key, _Value, Iterator}, Keep, Delete, KeepCount, Acc, Reference) ->
+subtract_heuristic(Next, _Keep, Delete, 0, Acc, Reference) ->
+  subtract_decided(Next, remove_keys(Delete, Acc), Reference);
+subtract_heuristic({Key, _Value, Iterator}, Keep, Delete, KeepCount, Acc, Reference) ->
     Next = maps:next(Iterator),
     case Reference of
         #{Key := _} ->
-            subtract_heuristic_lhs(Next, Keep, [Key | Delete], KeepCount, Acc, Reference);
+            subtract_heuristic(Next, Keep, [Key | Delete], KeepCount, Acc, Reference);
         _ ->
-            subtract_heuristic_lhs(Next, [Key | Keep], Delete, KeepCount - 1, Acc, Reference)
+            subtract_heuristic(Next, [Key | Keep], Delete, KeepCount - 1, Acc, Reference)
     end;
-subtract_heuristic_lhs(none, Keep, _Delete, _Count, _Acc, _Reference) ->
+subtract_heuristic(none, Keep, _Delete, _Count, _Acc, _Reference) ->
     maps:from_keys(Keep, []).
 
-subtract_decided_lhs({Key, _Value, Iterator}, Acc, Reference) ->
+subtract_decided({Key, _Value, Iterator}, Acc, Reference) ->
     case Reference of
         #{Key := _} ->
-            subtract_decided_lhs(maps:next(Iterator), maps:remove(Key, Acc), Reference);
+            subtract_decided(maps:next(Iterator), maps:remove(Key, Acc), Reference);
         _ ->
-            subtract_decided_lhs(maps:next(Iterator), Acc, Reference)
+            subtract_decided(maps:next(Iterator), Acc, Reference)
     end;
-subtract_decided_lhs(none, Acc, _Reference) ->
-    Acc.
-
-subtract_heuristic_rhs(Next, _Keep, Delete, 0, Acc) ->
-  subtract_decided_rhs(Next, remove_keys(Delete, Acc));
-subtract_heuristic_rhs({Key, _Value, Iterator}, Keep, Delete, KeepCount, Acc) ->
-    Next = maps:next(Iterator),
-    case Acc of
-        #{Key := _} ->
-            subtract_heuristic_rhs(Next, Keep, [Key | Delete], KeepCount, Acc);
-        _ ->
-            subtract_heuristic_rhs(Next, [Key | Keep], Delete, KeepCount - 1, Acc)
-    end;
-subtract_heuristic_rhs(none, Keep, _Delete, _Count, _Acc) ->
-    maps:from_keys(Keep, []).
-
-subtract_decided_rhs({Key, _Value, Iterator}, Acc) ->
-    subtract_decided_rhs(maps:next(Iterator), maps:remove(Key, Acc));
-subtract_decided_rhs(none, Acc) ->
+subtract_decided(none, Acc, _Reference) ->
     Acc.
